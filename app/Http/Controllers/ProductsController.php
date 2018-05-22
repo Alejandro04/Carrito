@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Product;
 use View;
+use Validator;
 
 class ProductsController extends Controller
 {
@@ -22,9 +23,8 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $item = Product::all();
-        return View::make('products.index')
-            ->with(compact('item'));
+        $item = Product::paginate(2);
+        return view('products.index', ['products' => $item]);
     }
 
     /**
@@ -50,7 +50,7 @@ class ProductsController extends Controller
             'description' => $request->description,
             'price' => $request->price,
         ];
-        $validator = \Validator::make($data, [
+        $validator = Validator::make($data, [
            'title' => 'required',
            'price' => 'required',
            'description' => 'required',
@@ -63,7 +63,7 @@ class ProductsController extends Controller
         {
         Product::create($data);
         return redirect('/products/create')->with('flash_message', "Creado con exito");
-       }
+        }
 
     }
 
@@ -75,9 +75,8 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-         $item= Cliente::FindOrFail($id);
-        return View::make('products.edit')
-            ->with(compact('item'));
+        $item = Product::FindOrFail($id);
+        return view('products.show', ['product' => $item]);
     }
 
     /**
@@ -88,7 +87,8 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $item = Product::FindOrFail($id);
+        return view('products.edit', ['product' => $item]);
     }
 
     /**
@@ -100,7 +100,27 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $data = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'price' => $request->price,
+        ];
+        $validator = Validator::make($data, [
+           'title' => 'required',
+           'price' => 'required',
+           'description' => 'required',
+        ]);
+        if ($validator->fails()) 
+        {
+            return redirect()->back()->withInput()->withErrors($validator->errors());
+        }
+        else
+        {
+            $product->update($data);
+            return redirect('/products/'.$id.'/edit')->with('flash_message', "Actualizado con exito");
+        }
+      
     }
 
     /**
@@ -111,6 +131,7 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Product::destroy($id);
+        return redirect('/products')->with('flash_message', "Eliminado con exito");
     }
 }
