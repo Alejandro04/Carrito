@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Product;
+use App\Http\Resources\ProductsCollection;
 use View;
 use Validator;
 
@@ -12,7 +13,7 @@ class ProductsController extends Controller
 
     public function __construct()
     {
-      $this->middleware('auth');
+      $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
 
@@ -21,9 +22,15 @@ class ProductsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $item = Product::paginate(2);
+        $item = Product::paginate();
+        
+        if($request->wantsJson()){
+           // return $item->toJson();
+            return new ProductsCollection($item);
+        }
+
         return view('products.index', ['products' => $item]);
     }
 

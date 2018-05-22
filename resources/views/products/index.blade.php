@@ -4,6 +4,8 @@
 
 <div class="container">
 	<div class="row">
+		<products-component></products-component>
+		<!--
 		@if(Session::has('flash_message'))
             <p class="alert alert-success">{{ Session::get('flash_message') }}</p>
         @endif
@@ -27,6 +29,7 @@
 				</div>
 			</div>
 		@endforeach
+		-->
 	</div>
 	<div class="actions">
 		{{$products->links()}}
