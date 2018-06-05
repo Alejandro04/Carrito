@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Product;
+use App\ShoppingCart;
 use App\Http\Resources\ProductsCollection;
 use View;
 use Validator;
@@ -24,14 +25,17 @@ class ProductsController extends Controller
      */
     public function index(Request $request)
     {
-        $item = Product::paginate();
-        
+        //Manejo de sesiones para trabajar el carrito.
+        $sessionName = 'shopping_cart_id';
+        $shopping_cart_id = $request->session()->get($sessionName);
+        $shopping_cart = ShoppingCart::findOrCreateById($shopping_cart_id);
+        $request->session()->put($sessionName, $shopping_cart_id);
+
+        $item = Product::paginate(1);       
         if($request->wantsJson()){
-           // return $item->toJson();
             return new ProductsCollection($item);
         }
-
-        return view('products.index', ['products' => $item]);
+        return view('products.index', ['products' => $item, 'shopping_cart' => $shopping_cart->id]);
     }
 
     /**
