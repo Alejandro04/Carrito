@@ -1,14 +1,14 @@
-<div class="col-xs-12 col-sm-6 col-md-4">
-	<div class="card" style="padding: 20px; margin-bottom: 20px;">
-		<header>
-			<h2 class="card-title">
-				<a href="/products/{{product.id}}">{{product.title}}</a>
-			</h2>
-			<h4 class="card-subtitle">{{product.price}}</h4>
-		</header>
-	<p class="card-text">{{product.description}}</p>
+<template>
+	<div class="card" style="width: 18rem; margin:5px">
+		<div class="card-body">
+			<h5 class="card-title">{{product.title}}</h5>
+			<p class="card-text">{{product.description}}</p>
+			<p>{{product.price}}</p>
+			<a :href="'/products/'+ product.id" class="btn btn-primary">Ver</a>
+		</div>
 	</div>
-</div>
+</template>
+
 
 
 <script>
