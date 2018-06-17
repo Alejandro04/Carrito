@@ -27,4 +27,8 @@ Route::get('/products/{id}/edit', ['as' => 'products.edit', 'uses' => 'ProductsC
 Route::put('/products/{id}', ['as' => 'products.update', 'uses' => 'ProductsController@update' ]);
 Route::delete('/products/{id}', ['as' => 'products.destroy', 'uses' => 'ProductsController@destroy']);
 
+Route::resource('in_shopping_carts', 'ProductInShoppingCartsController', [
+    "only" => ['store', 'destroy']
+]);
+
 Route::get('/home', 'HomeController@index')->name('home');
