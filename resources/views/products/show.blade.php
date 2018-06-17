@@ -6,7 +6,7 @@
         <div class="col-xs-12 col-sm-12 col-md-7 col-lg-6">
         	<div class="card">
         		<header class="padding text-center bg-primary">
-        			
+					
         		</header>
         		<div class="card-body padding">
         			<h1 class="card-title">{{$product->title}}</h1>

@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container">
-	<h1>{{$shopping_cart}}</h1>
+	<h1></h1>
 	<div class="row">
 		<products-component></products-component>
 	</div>
