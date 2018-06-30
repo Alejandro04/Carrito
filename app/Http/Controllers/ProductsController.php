@@ -104,7 +104,6 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
         $data = [
             'title' => $request->title,
             'description' => $request->description,
@@ -117,11 +116,15 @@ class ProductsController extends Controller
         ]);
         if ($validator->fails()) 
         {
-            return redirect()->back()->withInput()->withErrors($validator->errors());
+            return $validator->errors();
         }
         else
         {
-            $product->update($data);
+            $product = Product::findOrFail($id);
+            $product->title = $request->title;
+            $product->descriptipn = $request->description;
+            $product->price = $request->price;
+            $product->save($data);
             return redirect('/products/'.$id.'/edit')->with('flash_message', "Actualizado con exito");
         }
       
